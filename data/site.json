@@ -1,0 +1,16 @@
+{
+  "nameKo": "최승희",
+  "nameEn": "Choi Seung Hui",
+  "about": "건국대학교 커뮤니케이션디자인학과에서 공부하며 UX UI, 웹, 인터랙션 작업을 합니다.",
+  "colophon": "2026 Choi Seung Hui",
+  "nav": [
+    { "label": "Work", "href": "#work" },
+    { "label": "About", "href": "#about" },
+    { "label": "Contact", "href": "#contact" }
+  ],
+  "contact": [
+    { "label": "your@email.com", "href": "mailto:your@email.com" },
+    { "label": "Instagram", "href": "" },
+    { "label": "Behance", "href": "" }
+  ]
+}

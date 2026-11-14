@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ↓ 브라우저 탭에 보이는 제목과 검색 결과에 보이는 설명 -->
+<title>최승희 Choi Seung Hui</title>
+<meta name="description" content="최승희의 작업 기록. UX UI, 웹, 인터랙션.">
+
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23fff'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<!--
+  이 파일은 "틀"입니다. 글자 내용은 data 폴더에 들어 있습니다.
+    data/works.json  작업 목록
+    data/site.json   이름, 소개, 메뉴, 연락처
+  작업을 추가하거나 고칠 때는 그 두 파일만 열면 됩니다.
+  이 파일은 섹션을 늘리거나 없앨 때만 건드리세요.
+-->
+
+<a class="skip" href="#work">작업 목록으로 건너뛰기</a>
+
+<header class="site-header">
+  <h1 class="site-name" data-slot="name"></h1>
+  <nav class="site-nav" data-slot="nav" aria-label="주요 메뉴"></nav>
+</header>
+
+<main>
+  <section class="block" id="work" aria-labelledby="work-heading">
+    <h2 id="work-heading">Work</h2>
+    <ul class="work-list" data-slot="works"></ul>
+  </section>
+
+  <section class="block" id="about" aria-labelledby="about-heading">
+    <h2 id="about-heading">About</h2>
+    <p class="about-text" data-slot="about"></p>
+  </section>
+
+  <section class="block" id="contact" aria-labelledby="contact-heading">
+    <h2 id="contact-heading">Contact</h2>
+    <ul class="contact-list" data-slot="contact"></ul>
+  </section>
+</main>
+
+<p class="colophon" data-slot="colophon"></p>
+
+<noscript>
+  <p class="colophon">이 사이트는 자바스크립트로 작업 목록을 불러옵니다. 브라우저에서 자바스크립트를 켜 주세요.</p>
+</noscript>
+
+<script src="js/render.js"></script>
+</body>
+</html>

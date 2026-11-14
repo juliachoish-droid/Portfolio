@@ -1,0 +1,126 @@
+/* ============================================================
+   보이는 방식(디자인)을 정하는 파일입니다.
+   글자 내용은 js/content.js 에 있습니다.
+
+   자주 바꿀 만한 값은 바로 아래 :root 에 모아 두었습니다.
+   ============================================================ */
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --grey: #6B6B6B;          /* 연도, 설명, 섹션 이름에 쓰는 회색 */
+  --hover: #EEFF00;         /* 링크에 마우스를 올렸을 때 */
+
+  --size: 16px;             /* 글자 크기. 사이트 전체가 이 크기 하나입니다 */
+  --pad: clamp(20px, 3.4vw, 48px);   /* 화면 좌우 여백 */
+  --label: 280px;           /* 왼쪽 섹션 이름 칸 너비 */
+  --year: 96px;             /* 연도 칸 너비 */
+  --title: 320px;           /* 작업 이름 칸 너비 */
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--black);
+  font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  font-size: var(--size);
+  font-weight: 400;
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 제목도 본문과 같은 크기, 같은 굵기로 둡니다 */
+h1, h2, p, ul { margin: 0; padding: 0; font-size: inherit; font-weight: inherit; }
+ul { list-style: none; }
+p { text-wrap: pretty; }
+
+a { color: inherit; text-decoration: none; }
+a:hover, a:focus-visible { background: var(--hover); color: var(--black); }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+::selection { background: var(--hover); color: var(--black); }
+
+/* 키보드로 Tab 을 눌렀을 때만 나타나는 건너뛰기 링크 */
+.skip {
+  position: absolute; left: var(--pad); top: -100px;
+  padding: 8px 12px; background: var(--hover);
+}
+.skip:focus { top: 12px; }
+
+
+/* ---------- 머리말 ---------- */
+
+.site-header {
+  display: flex; flex-wrap: wrap; justify-content: space-between;
+  gap: 4px 24px;
+  padding: 20px var(--pad);
+}
+.site-name { white-space: nowrap; }
+.name-en { color: var(--grey); }
+.site-nav { display: flex; gap: clamp(18px, 2.4vw, 36px); }
+
+
+/* ---------- 본문 ---------- */
+
+main {
+  display: grid;
+  row-gap: 64px;                      /* 섹션 사이 간격 */
+  padding: 44px var(--pad) 96px;
+}
+
+/* 섹션 하나 = 왼쪽 이름 + 오른쪽 내용 */
+.block {
+  display: grid;
+  grid-template-columns: var(--label) minmax(0, 1fr);
+}
+.block > h2 { color: var(--grey); }
+
+
+/* ---------- 작업 목록 ---------- */
+
+.work-list { display: grid; row-gap: 8px; }
+
+.work {
+  display: grid;
+  grid-template-columns: var(--year) var(--title) minmax(0, 1fr);
+  column-gap: 16px;
+}
+.work-year { color: var(--grey); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.work-summary { color: var(--grey); }
+
+
+/* ---------- 소개, 연락처, 맨 아래 ---------- */
+
+.about-text { max-width: 35em; }
+
+.colophon { padding: 0 var(--pad) 32px; color: var(--grey); }
+
+
+/* ---------- 좁은 화면 (휴대폰) ---------- */
+
+@media (max-width: 760px) {
+  main { row-gap: 48px; padding-top: 28px; padding-bottom: 72px; }
+
+  .block { grid-template-columns: minmax(0, 1fr); row-gap: 12px; }
+
+  .work-list { row-gap: 16px; }
+  .work {
+    grid-template-columns: 6em minmax(0, 1fr);
+    grid-template-areas:
+      "year  title"
+      ".     summary";
+    column-gap: 0;
+  }
+  .work-year    { grid-area: year; }
+  .work-title   { grid-area: title; }
+  .work-summary { grid-area: summary; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}

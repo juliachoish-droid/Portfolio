@@ -1,0 +1,88 @@
+# ============================================================
+# Pages CMS 설정 파일 (app.pagescms.org)
+#
+# 이 파일은 글쓰기 화면이 어떻게 생길지를 정합니다.
+# 여기에 적은 label 이 그대로 입력칸 이름으로 보입니다.
+#
+# 쓰는 법
+#   1. 이 저장소를 GitHub 에 올립니다.
+#   2. app.pagescms.org 에 GitHub 계정으로 로그인합니다.
+#   3. 이 저장소를 고르면 아래 내용대로 글쓰기 화면이 만들어집니다.
+# ============================================================
+
+# 이미지를 올리면 images 폴더에 저장됩니다
+media:
+  input: images
+  output: /images
+
+content:
+
+  # ---------- 작업 목록 ----------
+  - name: works
+    label: 작업 목록
+    type: file
+    path: data/works.json
+    fields:
+      - name: works
+        label: 작업
+        type: object
+        list:
+          min: 1
+        fields:
+          - name: year
+            label: 연도
+            type: string
+            description: 예) 2026  또는  2025–2026
+          - name: title
+            label: 작업 이름
+            type: string
+          - name: summary
+            label: 한 줄 설명
+            type: string
+          - name: href
+            label: 링크 주소
+            type: string
+            required: false
+            description: 비워 두면 링크가 생기지 않습니다
+
+  # ---------- 사이트 기본 정보 ----------
+  - name: site
+    label: 사이트 정보
+    type: file
+    path: data/site.json
+    fields:
+      - name: nameKo
+        label: 이름 (한글)
+        type: string
+      - name: nameEn
+        label: 이름 (영문)
+        type: string
+      - name: about
+        label: 소개
+        type: text
+      - name: colophon
+        label: 맨 아래 한 줄
+        type: string
+      - name: nav
+        label: 위쪽 메뉴
+        type: object
+        list: true
+        fields:
+          - name: label
+            label: 메뉴 이름
+            type: string
+          - name: href
+            label: 주소
+            type: string
+      - name: contact
+        label: 연락처
+        type: object
+        list: true
+        fields:
+          - name: label
+            label: 보이는 글자
+            type: string
+          - name: href
+            label: 주소
+            type: string
+            required: false
