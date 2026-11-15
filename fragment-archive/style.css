@@ -225,3 +225,95 @@ footer {
   .main-layout { flex-direction:column; }
   .result-panel { width:100%; }
 }
+
+/* ════════════════════════════════════════════
+   화면 영수증 — 출력 버튼을 누르면 위에서 내려옵니다
+   ════════════════════════════════════════════ */
+
+#receipt {
+  --tear: 7px;
+  width: min(320px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  border: 0;
+  padding: 16px 22px calc(28px + var(--tear));
+  background: rgba(252, 251, 248, .72);
+  color: var(--text);
+  font-family: 'Courier New', monospace;
+  font-size: 10.5px;
+  letter-spacing: .06em;
+  line-height: 1.7;
+}
+
+#receipt:not(:popover-open) { display: none; }
+
+@supports selector(:popover-open) {
+  #receipt {
+    position: fixed;
+    inset: 0 0 auto 0;
+    margin: 0 auto;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+
+    /* 아래쪽을 영수증처럼 뜯긴 모양으로 */
+    -webkit-mask:
+      linear-gradient(#000 0 0) top / 100% calc(100% - var(--tear)) no-repeat,
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--tear) * 2) var(--tear) repeat-x;
+    mask:
+      linear-gradient(#000 0 0) top / 100% calc(100% - var(--tear)) no-repeat,
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--tear) * 2) var(--tear) repeat-x;
+
+    /* 프린터에서 종이가 한 칸씩 밀려 나오듯 */
+    transform: translateY(-102%);
+    transition: transform .7s steps(14, end), display .7s allow-discrete, overlay .7s allow-discrete;
+  }
+  #receipt:popover-open { transform: translateY(0); }
+  @starting-style { #receipt:popover-open { transform: translateY(-102%); } }
+  #receipt::backdrop { background: rgba(26, 26, 24, .12); }
+}
+
+#receipt-close {
+  display: block;
+  margin: 0 0 10px auto;
+  padding: 2px 6px;
+  border: .5px solid var(--border);
+  background: none;
+  font: inherit;
+  color: var(--muted);
+  cursor: pointer;
+}
+#receipt-close:hover { color: var(--text); }
+
+#receipt hr {
+  height: 0;
+  margin: 10px 0;
+  border: 0;
+  border-top: 1px dashed rgba(26, 26, 24, .35);
+}
+
+.receipt-head { text-align: center; letter-spacing: .14em; }
+
+.receipt-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;   /* 디더링 점이 또렷하게 */
+}
+
+.receipt-row { display: flex; justify-content: space-between; gap: 16px; }
+.receipt-row span:last-child { text-align: right; }
+
+#receipt-actions { margin-top: 16px; text-align: center; }
+#receipt-save {
+  display: inline-block;
+  padding: 5px 14px;
+  border: .5px solid var(--border);
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: .1em;
+}
+#receipt-save:hover { color: var(--text); border-color: rgba(26, 26, 24, .35); }
+
+@media (prefers-reduced-motion: reduce) {
+  #receipt { transition: none !important; }
+}

@@ -838,6 +838,8 @@ async function printFragment() {
   try {
     const asciiImage = canvasToAscii(warpedCvs, 40);
 
+    showReceipt(currentFragment);   // 화면에도 영수증을 출력
+
     const res = await fetch('http://localhost:3000/print', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -857,8 +859,8 @@ async function printFragment() {
     const onDevice = ['localhost', '127.0.0.1'].includes(location.hostname);
     badge.textContent = onDevice
       ? '출력 실패: 프린터 서버를 확인하세요'
-      : '영수증 출력은 전시 현장에서만 작동합니다';
-    badge.className = 'error';
+      : '영수증은 화면으로 출력했습니다';
+    badge.className = onDevice ? 'error' : 'done';
 
     setTimeout(() => {
       badge.textContent = prevText;
@@ -867,6 +869,72 @@ async function printFragment() {
   } finally {
     btnPrint.disabled = !currentFragment;
   }
+}
+
+// ════════════════════════════════════════════
+// 화면 영수증
+// ════════════════════════════════════════════
+// 팝업 틀은 이 스크립트보다 아래에 있어서, 쓸 때 찾습니다
+function showReceipt(fragment) {
+  const receiptEl    = document.getElementById('receipt');
+  const receiptBody  = document.getElementById('receipt-body');
+  const receiptSave  = document.getElementById('receipt-save');
+  const receiptClose = document.getElementById('receipt-close');
+  if (!receiptEl || !fragment) return;
+
+  receiptClose.onclick = () => receiptEl.hidePopover();
+
+  const no       = String(fragment.collectionNo).padStart(3, '0');
+  const timeText = formatDateTime(new Date(fragment.capturedAt));
+  const dataUrl  = makeReceiptImage(warpedCvs, 280);
+
+  receiptBody.innerHTML = '';
+
+  const head = document.createElement('div');
+  head.className = 'receipt-head';
+  head.innerHTML = 'FRAGMENT ARCHIVE<br>COLLECTION #' + no;
+  receiptBody.appendChild(head);
+
+  receiptBody.appendChild(rule());
+
+  const img = document.createElement('img');
+  img.className = 'receipt-img';
+  img.src = dataUrl;
+  img.alt = 'Fragment #' + no;
+  receiptBody.appendChild(img);
+
+  receiptBody.appendChild(rule());
+
+  [['CAPTURED', timeText],
+   ['BRIGHTNESS', fragment.brightness + '%'],
+   ['TEXTURE', fragment.texture + '%'],
+   ['DENSITY', fragment.density + '%'],
+   ['SIZE', fragment.width + ' x ' + fragment.height]
+  ].forEach(([k, v]) => {
+    const row = document.createElement('div');
+    row.className = 'receipt-row';
+    const dt = document.createElement('span'); dt.textContent = k;
+    const dd = document.createElement('span'); dd.textContent = v;
+    row.append(dt, dd);
+    receiptBody.appendChild(row);
+  });
+
+  receiptBody.appendChild(rule());
+
+  const foot = document.createElement('div');
+  foot.className = 'receipt-head';
+  foot.textContent = 'THANK YOU';
+  receiptBody.appendChild(foot);
+
+  receiptSave.href = dataUrl;
+  receiptSave.download = 'fragment-' + no + '.png';
+
+  receiptEl.showPopover();
+}
+
+function rule() {
+  const hr = document.createElement('hr');
+  return hr;
 }
 
 function makeReceiptImage(sourceCanvas, targetWidth = 280) {

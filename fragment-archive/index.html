@@ -94,5 +94,14 @@
 <footer>양손 프레임 · 핀치 캡처 · Fragment Archive · localhost 프린터 서버 필요</footer>
 
 <script src="main.js"></script>
+<!-- 영수증 팝업 — 출력 버튼을 누르면 위에서 한 칸씩 내려옵니다 -->
+<article id="receipt" popover aria-label="영수증">
+  <button id="receipt-close" type="button" aria-label="닫기">✕</button>
+  <div id="receipt-body"></div>
+  <div id="receipt-actions">
+    <a id="receipt-save" download="fragment-receipt.png">이미지로 저장</a>
+  </div>
+</article>
+
 </body>
 </html>
