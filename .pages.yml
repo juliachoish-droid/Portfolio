@@ -26,8 +26,7 @@ content:
       - name: works
         label: 작업
         type: object
-        list:
-          min: 1
+        list: true
         fields:
           - name: year
             label: 연도
@@ -42,7 +41,6 @@ content:
           - name: href
             label: 링크 주소
             type: string
-            required: false
             description: 비워 두면 링크가 생기지 않습니다
 
   # ---------- 사이트 기본 정보 ----------
@@ -85,4 +83,3 @@ content:
           - name: href
             label: 주소
             type: string
-            required: false
