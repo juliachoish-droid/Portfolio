@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fragment Archive</title>
+  <link rel="stylesheet" href="style.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <h1>FRAGMENT ARCHIVE</h1>
+  <p>양손 검지를 들어 현실의 조각을 프레임으로 잡고 — 핀치하면 수집</p>
+  <span id="status-badge">대기 중</span>
+</header>
+
+<div class="main-layout">
+  <div class="cam-col">
+    <div class="cam-wrapper" id="cam-wrapper">
+      <div id="placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
+        <p>카메라를 시작하세요</p>
+      </div>
+      <video id="video" autoplay playsinline muted></video>
+      <img id="frozen-img" alt="frozen"/>
+      <canvas id="overlay"></canvas>
+      <div id="pinch-gauge">
+        🤏 핀치
+        <div id="pinch-bar-wrap"><div id="pinch-bar"></div></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="btn-start" class="primary" type="button">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+        카메라 시작
+      </button>
+      <button id="btn-stop" type="button" disabled>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+        정지
+      </button>
+      <button id="btn-reset" type="button" disabled class="danger">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/></svg>
+        다시 찍기
+      </button>
+      <button id="btn-capture" type="button" disabled class="blue">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        수동 캡처
+      </button>
+    </div>
+
+    <div class="guide-bar">
+      <div class="guide-item"><span class="guide-icon">☝️</span> 양손 검지로 프레임 지정</div>
+      <div class="guide-item"><span class="guide-icon">🤏</span> 양손 동시 핀치 → 조각 수집</div>
+    </div>
+  </div>
+
+  <div class="result-panel">
+    <h3>FRAGMENT ANALYSIS</h3>
+    <div id="warped-preview-wrap">
+      <p>수집된 장면 조각</p>
+      <canvas id="warped-canvas"></canvas>
+    </div>
+
+    <div id="fragment-analysis">
+      <p class="no-fragment">핀치로 캡처 후<br>분석 결과가 여기 표시됩니다.</p>
+    </div>
+
+    <button id="btn-ascii-preview" class="blue" type="button" disabled>
+      ASCII 미리보기
+    </button>
+
+    <div id="ascii-preview-wrap">
+      <p>ASCII FRAGMENT PREVIEW</p>
+      <pre id="ascii-preview"></pre>
+    </div>
+
+    <button id="btn-print-fragment" class="blue" type="button" disabled>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 6 2 18 2 18 9"/>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+        <rect x="6" y="14" width="12" height="8"/>
+      </svg>
+      영수증 출력
+    </button>
+  </div>
+</div>
+
+<footer>양손 프레임 · 핀치 캡처 · Fragment Archive · localhost 프린터 서버 필요</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

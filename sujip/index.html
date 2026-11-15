@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>수집 — COLLECTION</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── 기록 화면 ── -->
+  <section id="section-collect">
+    <canvas id="trail-canvas"></canvas>
+    <canvas id="bottle-canvas"></canvas>
+
+    <div class="ui-tl">
+      <div class="label-sm">수집 — COLLECTION</div>
+      <div class="label-muted">수집, 모으는 일에 대하여</div>
+    </div>
+
+    <div class="ui-tr">
+      <div class="label-sm">기록 <span id="count">0</span></div>
+      <div class="label-muted" id="coords">x:— &nbsp;y:—</div>
+    </div>
+
+    <div class="ui-bl">
+      <span class="dot"></span>
+      <span id="time-display">00:00</span>
+    </div>
+
+    <div class="ui-br">
+      <span id="bottle-item-count">0</span>
+      <span class="label-muted">items</span>
+    </div>
+
+    <div class="collect-wrap" id="collect-wrap">
+      <button id="collect-btn">수집되기</button>
+    </div>
+  </section>
+
+  <!-- ── 아카이브 화면 ── -->
+  <section id="section-archive">
+
+    <div class="arch-top">
+      <div class="arch-top-left">
+        <div class="label-sm">ARCHIVE</div>
+        <div class="label-muted">수집된 흔적의 형태</div>
+      </div>
+      <div class="arch-top-right">
+        <div class="label-sm">TOTAL <span id="arch-total">0</span></div>
+      </div>
+    </div>
+
+    <div class="arch-hero">
+      <div class="arch-msg">
+        <strong id="arch-msg-title">기록이 저장되었습니다</strong>
+        <span id="arch-msg-sub"></span>
+      </div>
+      <div class="arch-actions">
+        <button class="arch-btn" id="view-latest-btn">내 기록 보기</button>
+        <button class="arch-btn" id="return-btn">다시 기록하기</button>
+      </div>
+      <div class="scroll-hint">아래로 스크롤 ↓</div>
+    </div>
+
+    <div class="arch-grid-section">
+      <div class="arch-grid-header">
+        <div class="label-sm">TRACE ARCHIVE</div>
+
+        <!-- 열 수 슬라이더 -->
+        <div class="grid-slider-wrap">
+          <span class="label-muted">view</span>
+          <input type="range" id="col-slider" min="2" max="12" value="6" step="1" />
+          <span class="label-muted" id="col-label">6</span>
+        </div>
+
+        <div class="label-muted">TOTAL <span id="arch-total2">0</span></div>
+      </div>
+
+      <div class="archive-binders" id="archive-binders">
+        <div class="binder-group" data-group="shape">
+          <button class="binder-tab" type="button">형태</button>
+          <div class="binder-panel">
+            <button class="filter-tag" data-filter-group="shape" data-filter-value="round-jar">round-jar</button>
+            <button class="filter-tag" data-filter-group="shape" data-filter-value="soft-oval-vase">soft-oval-vase</button>
+            <button class="filter-tag" data-filter-group="shape" data-filter-value="soft-hourglass">soft-hourglass</button>
+          </div>
+        </div>
+
+        <div class="binder-group" data-group="color">
+          <button class="binder-tab" type="button">색</button>
+          <div class="binder-panel">
+            <button class="filter-tag" data-filter-group="color" data-filter-value="rose">rose</button>
+            <button class="filter-tag" data-filter-group="color" data-filter-value="sage">sage</button>
+            <button class="filter-tag" data-filter-group="color" data-filter-value="sky">sky</button>
+            <button class="filter-tag" data-filter-group="color" data-filter-value="peach">peach</button>
+            <button class="filter-tag" data-filter-group="color" data-filter-value="butter">butter</button>
+            <button class="filter-tag" data-filter-group="color" data-filter-value="violet">violet</button>
+          </div>
+        </div>
+
+        <div class="binder-group" data-group="period">
+          <button class="binder-tab" type="button">기간</button>
+          <div class="binder-panel">
+            <button class="filter-tag" data-filter-group="period" data-filter-value="1d">최근 하루</button>
+            <button class="filter-tag" data-filter-group="period" data-filter-value="1w">1주</button>
+            <button class="filter-tag" data-filter-group="period" data-filter-value="1m">1달</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="grid"></div>
+
+      <div class="more-wrap">
+        <button id="more-btn">MORE +</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── 팝업 ── -->
+  <div id="popup">
+    <div id="popup-backdrop"></div>
+    <div class="popup-box">
+
+      <div class="popup-head">
+        <span id="popup-num" class="label-muted">RECORD — 001</span>
+        <button id="popup-close">CLOSE</button>
+      </div>
+
+      <div class="popup-view-switch">
+        <button class="view-btn active" data-view="blob">BLOB</button>
+        <button class="view-btn" data-view="line">LINE</button>
+      </div>
+
+      <div class="popup-body">
+        <div class="popup-canvas-wrap">
+          <canvas id="popup-canvas"></canvas>
+        </div>
+        <aside class="popup-side">
+          <div class="popup-side-head">
+            <span class="label-muted">모인 물건</span>
+            <span id="popup-items-count" class="label-muted"></span>
+          </div>
+          <div id="popup-items-list"></div>
+        </aside>
+      </div>
+
+      <div class="popup-foot">
+        <div class="popup-meta-item">
+          <div class="label-muted">ID</div>
+          <div id="popup-id">—</div>
+        </div>
+        <div class="popup-meta-item">
+          <div class="label-muted">DURATION</div>
+          <div id="popup-duration">—</div>
+        </div>
+        <div class="popup-meta-item">
+          <div class="label-muted">COORDS</div>
+          <div id="popup-coords">—</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="cursor"></div>
+  <script src="main.js"></script>
+</body>
+</html>

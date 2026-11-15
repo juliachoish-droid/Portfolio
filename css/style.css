@@ -101,6 +101,37 @@ main {
 .colophon { padding: 0 var(--pad) 32px; color: var(--grey); }
 
 
+/* ---------- 작업 상세 페이지 ---------- */
+
+.work-detail { max-width: 40em; }
+
+/* 썸네일: 사이트 화면 미리보기 */
+.thumb { margin-bottom: 32px; }
+.thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--grey);
+}
+.thumb-empty {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--grey);
+  color: var(--grey);
+}
+
+.work-detail-title { margin-bottom: 4px; }
+.work-detail .work-summary { margin-bottom: 24px; }
+
+.work-para { margin-bottom: 16px; }
+
+.work-links { margin: 32px 0 0; }
+.work-links li { margin-bottom: 4px; }
+
+.back-link { display: inline-block; margin-top: 48px; color: var(--grey); }
+
+
 /* ---------- 좁은 화면 (휴대폰) ---------- */
 
 @media (max-width: 760px) {
