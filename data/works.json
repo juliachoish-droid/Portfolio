@@ -17,8 +17,14 @@
       "thumbnail": "/images/sujip.png",
       "description": "수집이라는 행위 자체를 다룬 인터랙션 작업입니다.\n\n화면 위에 남은 움직임의 흔적이 하나의 형태로 모이고, 그 형태는 영수증 프린터로 출력되어 손에 잡히는 종이가 됩니다. 출력된 종이를 엮으면 한 권의 책이 되고, 디지털 흔적이 물성을 가진 물건으로 넘어갑니다.\n\n두 가지 버전으로 만들었습니다. 첫 번째는 마우스의 궤적을 모으는 방식이고, 두 번째는 웹캠으로 손을 인식해 현실의 한 조각을 프레임으로 잡아 수집하는 방식입니다.",
       "links": [
-        { "label": "수집 — COLLECTION (버전 1)", "url": "/sujip/" },
-        { "label": "FRAGMENT ARCHIVE (버전 2)", "url": "/fragment-archive/" }
+        {
+          "label": "수집 — COLLECTION (버전 1)",
+          "url": "/sujip/"
+        },
+        {
+          "label": "FRAGMENT ARCHIVE (버전 2)",
+          "url": "/fragment-archive/"
+        }
       ]
     },
     {
@@ -28,7 +34,12 @@
       "summary": "여행 기록 웹사이트",
       "thumbnail": "",
       "description": "비행기 모드를 켜는 순간처럼, 접속하면 일상에서 잠시 벗어나 다시 여행을 떠나는 감각을 주는 웹사이트입니다.\n\n사진, 영상, 음악, 글처럼 여러 형태로 흩어진 여행 기록을 하나의 3D 공간 안에 모았습니다. 기록은 공간 속 오브젝트가 되고, 접속할 때마다 다르게 놓여 잊고 있던 순간을 우연히 다시 만나게 합니다.\n\nUX 리서치와 UI 디자인부터 프론트엔드 개발까지 직접 진행했습니다. Three.js로 3D 공간을 만들고 Supabase로 기록을 저장했습니다.",
-      "links": []
+      "links": [
+        {
+          "label": "Airplane_mode 웹사이트",
+          "url": "https://airplane-mode-delta.vercel.app"
+        }
+      ]
     }
   ]
 }
