@@ -1,0 +1,180 @@
+/* =================================
+   DEMO CSS BREAK
+================================= */
+
+.demo-break {
+
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    background: #fff;
+
+    overflow: hidden;
+}
+
+
+/* =================================
+   Demo 화면
+================================= */
+
+.demo-break .break-page {
+
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    background: #fff;
+}
+
+
+/* =================================
+   Canvas
+================================= */
+
+.demo-break .break-canvas {
+
+    display: block;
+
+    position: relative;
+
+    z-index: 1;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =================================
+   입력창
+================================= */
+
+.demo-break .break-input {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 2;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+    border: 0;
+    outline: 0;
+
+    resize: none;
+
+    background: transparent;
+
+    color: transparent;
+
+    caret-color: transparent;
+
+    font: inherit;
+
+    line-height: inherit;
+
+    letter-spacing: inherit;
+
+    overflow: auto;
+
+    scrollbar-width: none;
+}
+
+
+.demo-break .break-input::-webkit-scrollbar {
+
+    display: none;
+}
+
+
+.demo-break .break-input::selection {
+
+    background: transparent;
+}
+
+
+/* =================================
+   Canvas용 커서
+================================= */
+
+.demo-break .break-caret {
+
+    position: absolute;
+
+    z-index: 3;
+
+    width: 1px;
+
+    background: #111;
+
+    pointer-events: none;
+
+    animation:
+        break-caret-blink
+        1s steps(1,end)
+        infinite;
+}
+
+
+@keyframes break-caret-blink {
+
+    50% {
+
+        opacity: 0;
+    }
+}
+
+
+/* =================================
+   움직이는 오브젝트
+================================= */
+
+.demo-break .break-object {
+
+    position: absolute;
+
+    width: 70px;
+    height: 70px;
+
+    border-radius: 50%;
+
+    background: #111;
+
+    cursor: default;
+
+    z-index: 4;
+
+    pointer-events: none;
+
+    transform:
+        translate(-50%, -50%);
+}
+
+
+.demo-break .break-fixed-object {
+
+    pointer-events: none;
+}
+
+
+/* =================================
+   Demo 높이
+================================= */
+
+.demo-break {
+    height: auto;
+    min-height: 100vh;
+}
+
+.demo-break .break-page {
+    height: 150vh;
+    min-height: 150vh;
+}

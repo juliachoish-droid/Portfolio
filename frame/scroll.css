@@ -1,0 +1,295 @@
+/* =================================
+   전체 두루마리 장면
+================================= */
+
+.scroll-scene {
+
+    position: relative;
+
+    height: 300vh;
+
+    background: #fff;
+
+}
+
+
+/* =================================
+   두루마리
+================================= */
+
+.scroll {
+
+    position: sticky;
+
+    top: 0;
+
+    width: 100%;
+
+    background: #fff;
+
+}
+
+
+/* =================================
+   기존 막대 제거
+================================= */
+
+.top-roll,
+.roll-body,
+.roll-cap {
+
+    display: none;
+
+}
+
+
+/* =================================
+   종이
+================================= */
+
+.paper-window {
+
+    position: relative;
+
+    width: 80%;
+
+    height: 8vh;
+
+    margin:
+        6vh auto 0;
+
+    overflow: hidden;
+
+    z-index: 10;
+
+    transition:
+        height .45s cubic-bezier(.22,.61,.36,1);
+
+}
+
+
+/* =================================
+   실제 종이
+================================= */
+
+.paper {
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    min-height: 1000px;
+
+    background: #fff;
+
+    border-radius: 2px;
+
+    box-shadow:
+
+        inset
+        0 12px 20px
+        rgba(0,0,0,.08),
+
+        inset
+        0 -12px 20px
+        rgba(0,0,0,.08);
+
+}
+
+
+/* =================================
+   종이 아래 그림자
+================================= */
+
+.paper-window::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    bottom: -8px;
+
+    width: 100%;
+
+    height: 16px;
+
+    background:
+        rgba(0,0,0,.14);
+
+    filter:
+        blur(8px);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    z-index: 20;
+
+    transition:
+        opacity .2s ease;
+
+}
+
+
+/* 마우스를 종이에 올렸을 때 */
+
+.paper-window:hover::after {
+
+    opacity: 1;
+
+}
+
+
+/* =================================
+   글
+================================= */
+
+.paper-content {
+
+    padding:
+        72px
+        12%;
+
+}
+
+
+.paper-content p {
+
+    margin:
+        0 0 32px;
+
+}
+
+
+/* =================================
+   종이 끝
+================================= */
+
+.paper-end {
+
+    position: absolute;
+
+    left: 10%;
+
+    width: 80%;
+
+    height: 1px;
+
+    background: #111;
+
+    z-index: 25;
+
+    opacity: 0;
+
+}
+
+
+/* =================================
+   스크롤 안내문
+================================= */
+
+.scroll-guide {
+
+    position: absolute;
+
+    left: 50%;
+
+    top: 65%;
+
+    transform:
+        translate(-50%, -50%);
+
+    padding:
+        5px 7px;
+
+    white-space: nowrap;
+
+    background: #aaa;
+
+    color: #fff;
+
+    font-size: 10px;
+
+    line-height: 1;
+
+    z-index: 100;
+
+    pointer-events: none;
+
+    opacity: 1;
+
+    transition:
+
+        background .15s ease,
+
+        opacity .2s ease,
+
+        transform .2s ease;
+
+}
+
+
+/* =================================
+   종이에 마우스를 올렸을 때
+================================= */
+
+.paper-window:hover
+.scroll-guide {
+
+    background: #111;
+
+    color: #fff;
+
+}
+
+
+/* =================================
+   스크롤 시작 → 사라짐
+================================= */
+
+.scroll-guide.is-hidden {
+
+    opacity: 0;
+
+    transform:
+        translate(-50%, -50%)
+        translateY(-5px);
+
+}
+
+
+/* =================================
+   다음 화면
+================================= */
+
+.next-section {
+
+    min-height: 100vh;
+
+    padding:
+        15vh
+        10vw;
+
+    background: #fff;
+
+}
+
+
+.next-section p {
+
+    font-family: sans-serif;
+
+}
+
+
+.next-section h1 {
+
+    font-weight: normal;
+
+}

@@ -1,0 +1,334 @@
+/* =================================
+   BOOK
+================================= */
+
+.book {
+
+    width: 100%;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    background: #fff;
+}
+
+
+/* =================================
+   책 무대
+================================= */
+
+.book-stage {
+
+    width: 100%;
+
+    height: 80%;
+
+    min-height: 80vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    background: #fff;
+}
+
+
+/* =================================
+   책 전체
+================================= */
+
+.book-pages {
+
+    position: relative;
+
+    width:
+        min(900px, 88%);
+
+    height:
+        min(580px, 68vh);
+
+    perspective:
+        1800px;
+}
+
+
+/* =================================
+   페이지
+================================= */
+
+.book-page {
+
+    position: absolute;
+
+    top: 0;
+
+    width: 50%;
+    height: 100%;
+
+    background: #fff;
+
+    overflow: hidden;
+
+    border:
+        1px solid #111;
+
+    box-shadow: none;
+
+    backface-visibility:
+        hidden;
+
+    cursor: pointer;
+
+    transition:
+        transform
+        1s
+        cubic-bezier(.65,0,.35,1);
+}
+
+
+/* =================================
+   위치
+================================= */
+
+.page-prev,
+.page-left {
+
+    left: 0;
+
+    transform-origin:
+        right center;
+}
+
+
+.page-prev {
+
+    z-index: 1;
+}
+
+
+.page-left {
+
+    z-index: 5;
+}
+
+
+.page-right,
+.page-next {
+
+    left: 50%;
+
+    transform-origin:
+        left center;
+}
+
+
+.page-right {
+
+    z-index: 6;
+}
+
+
+.page-next {
+
+    z-index: 2;
+}
+
+
+/* =================================
+   넘김
+================================= */
+
+.page-right.turn-next {
+
+    transform:
+        rotateY(-180deg);
+}
+
+
+.page-left.turn-prev {
+
+    transform:
+        rotateY(180deg);
+}
+
+
+/* =================================
+   내용
+================================= */
+
+.page-content {
+
+    width: 100%;
+    height: 100%;
+
+    padding: 38px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+.page-content {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    padding: 38px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.page-content span {
+
+    margin-bottom: 18px;
+
+    color: #777;
+
+    font-size: 11px;
+}
+
+
+.page-content h1 {
+
+    margin:
+        0 0 14px;
+
+    font-size: 24px;
+
+    font-weight: 400;
+}
+
+
+.page-content p {
+
+    margin: 0;
+
+    font-size: 14px;
+}
+
+.page-blank,
+.page-blank .page-content {
+    background: #888;
+    color: #fff;
+}
+
+/* =================================
+   중앙선
+================================= */
+
+.book-pages::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    width: 1px;
+    height: 100%;
+
+    background: #111;
+
+    z-index: 20;
+
+    pointer-events: none;
+}
+
+
+/* =================================
+   안내
+================================= */
+
+.book-hint {
+
+    margin:
+        14px 0 0;
+
+    color: #111;
+
+    font-size: 11px;
+}
+
+
+
+
+/* =================================
+   커서 안내문
+================================= */
+
+.book-cursor-guide {
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    padding:
+        5px 7px;
+
+    background: #111;
+
+    color: #fff;
+
+    font-size: 10px;
+
+    line-height: 1;
+
+    white-space: nowrap;
+
+    z-index: 100;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    transform:
+        translate(12px, 12px);
+
+    transition:
+        opacity .15s ease,
+        background .15s ease;
+
+}
+
+
+/* =================================
+   오른쪽 페이지
+================================= */
+
+.book-pages.is-next-hover
+.book-cursor-guide {
+
+    background: #111;
+
+    opacity: 1;
+
+}
+
+
+/* =================================
+   왼쪽 페이지
+================================= */
+
+.book-pages.is-prev-hover
+.book-cursor-guide {
+
+    background: #111;
+
+    opacity: 1;
+
+}
