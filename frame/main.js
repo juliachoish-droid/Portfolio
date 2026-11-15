@@ -21,6 +21,13 @@ const pageLinks =
 
 function openMenu() {
 
+    if (!menuButton || !menuOverlay) {
+
+        return;
+
+    }
+
+
     menuOverlay.classList.add(
         "is-open"
     );
@@ -47,6 +54,13 @@ function openMenu() {
 
 function closeMenu() {
 
+    if (!menuButton || !menuOverlay) {
+
+        return;
+
+    }
+
+
     menuOverlay.classList.remove(
         "is-open"
     );
@@ -71,57 +85,69 @@ function closeMenu() {
    햄버거
 ================================= */
 
-menuButton.addEventListener(
-    "click",
-    () => {
+if (menuButton) {
 
-        if (
-            menuOverlay.classList.contains(
-                "is-open"
-            )
-        ) {
+    menuButton.addEventListener(
+        "click",
+        () => {
 
-            closeMenu();
+            if (
+                menuOverlay.classList.contains(
+                    "is-open"
+                )
+            ) {
 
-        } else {
+                closeMenu();
 
-            openMenu();
+            } else {
+
+                openMenu();
+
+            }
 
         }
+    );
 
-    }
-);
+}
 
 
 /* =================================
    닫기
 ================================= */
 
-menuClose.addEventListener(
-    "click",
-    closeMenu
-);
+if (menuClose) {
+
+    menuClose.addEventListener(
+        "click",
+        closeMenu
+    );
+
+}
 
 
 /* =================================
    바깥 클릭
 ================================= */
 
-menuOverlay.addEventListener(
-    "click",
-    (event) => {
+if (menuOverlay) {
 
-        if (
-            event.target ===
-            menuOverlay
-        ) {
+    menuOverlay.addEventListener(
+        "click",
+        (event) => {
 
-            closeMenu();
+            if (
+                event.target ===
+                menuOverlay
+            ) {
+
+                closeMenu();
+
+            }
 
         }
+    );
 
-    }
-);
+}
 
 
 /* =================================
