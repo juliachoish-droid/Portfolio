@@ -1,6 +1,6 @@
 /* ============================================================
    보이는 방식(디자인)을 정하는 파일입니다.
-   글자 내용은 js/content.js 에 있습니다.
+   글자 내용은 data 폴더에 있습니다.
 
    자주 바꿀 만한 값은 바로 아래 :root 에 모아 두었습니다.
    ============================================================ */
@@ -65,7 +65,7 @@ a:hover, a:focus-visible { background: var(--hover); color: var(--black); }
 }
 .site-name { white-space: nowrap; }
 .name-en { color: var(--grey); }
-.site-nav { display: flex; gap: clamp(18px, 2.4vw, 36px); }
+.site-nav { display: flex; flex-wrap: wrap; gap: 0 clamp(18px, 2.4vw, 36px); }
 
 
 /* ---------- 본문 ---------- */
@@ -135,6 +135,19 @@ main {
 /* 줄바꿈을 적은 그대로 살립니다 */
 .work-para { margin-bottom: 16px; white-space: pre-line; }
 
+/* 스터디의 체크 목록: 왼쪽 단계, 오른쪽 이름과 해볼 것 */
+.items-count { margin-top: 32px; color: var(--grey); }
+.items { display: grid; row-gap: 12px; margin-top: 16px; }
+.item {
+  display: grid;
+  grid-template-columns: var(--year) minmax(0, 1fr);
+  column-gap: 16px;
+}
+.item-group { color: var(--grey); }
+.item-title, .item-note { display: block; }
+.item-note { color: var(--grey); }
+.item-done { margin-left: 8px; color: var(--grey); }
+
 .work-links { margin: 32px 0 0; }
 .work-links li { margin-bottom: 4px; }
 
@@ -159,6 +172,8 @@ main {
   .work-year    { grid-area: year; }
   .work-title   { grid-area: title; }
   .work-summary { grid-area: summary; }
+
+  .item { grid-template-columns: 6em minmax(0, 1fr); column-gap: 0; }
 }
 
 @media (prefers-reduced-motion: no-preference) {

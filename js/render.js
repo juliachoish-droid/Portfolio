@@ -1,13 +1,24 @@
 /* ============================================================
    data 폴더의 내용을 화면에 그려 넣는 파일입니다.
-   첫 화면(index.html)과 작업 상세 페이지(work.html) 둘 다 이 파일을 씁니다.
+   첫 화면(index.html)과 상세 페이지(work.html) 둘 다 이 파일을 씁니다.
    보통은 고칠 일이 없습니다.
 
-   글 내용은  data/site.json  과  data/works.json  에 있습니다.
+   글 내용은 data 폴더에 있습니다.
+     data/site.json     이름, 소개, 메뉴, 연락처
+     data/works.json    작업 목록   →  /work/이름
+     data/notes.json    노트        →  /note/이름
+     data/studies.json  스터디      →  /study/이름
    ============================================================ */
 
 (function () {
   "use strict";
+
+  // 목록 세 가지. 첫 화면의 자리 이름(slot)과 상세 페이지 주소가 여기서 정해집니다.
+  var KINDS = {
+    work:  { slot: "works",   anchor: "#work",  back: "작업 목록으로 돌아가기",   missing: "없는 작업",   missingText: "그런 작업을 찾지 못했습니다." },
+    note:  { slot: "notes",   anchor: "#note",  back: "노트 목록으로 돌아가기",   missing: "없는 노트",   missingText: "그런 노트를 찾지 못했습니다." },
+    study: { slot: "studies", anchor: "#study", back: "스터디 목록으로 돌아가기", missing: "없는 스터디", missingText: "그런 스터디를 찾지 못했습니다." }
+  };
 
   function slot(name) {
     return document.querySelector('[data-slot="' + name + '"]');
@@ -45,11 +56,13 @@
     return String(text || "").split(/\n\s*\n/).map(function (s) { return s.trim(); }).filter(Boolean);
   }
 
-  // 주소에서 작업 아이디를 꺼냅니다.  /work/sujip  →  sujip
-  function currentWorkId() {
-    var m = location.pathname.match(/\/work\/([^/]+)\/?$/);
-    if (m) return decodeURIComponent(m[1]);
-    return new URLSearchParams(location.search).get("id") || "";
+  // 주소에서 종류와 아이디를 꺼냅니다.  /study/aistudy  →  study, aistudy
+  function currentEntry() {
+    var m = location.pathname.match(/\/(work|note|study)\/([^/]+)\/?$/);
+    if (m) return { kind: m[1], id: decodeURIComponent(m[2]) };
+    var q = new URLSearchParams(location.search);
+    var kind = q.get("kind");
+    return { kind: KINDS[kind] ? kind : "work", id: q.get("id") || "" };
   }
 
   // ---------- 모든 페이지 공통 ----------
@@ -77,23 +90,34 @@
   }
 
   // ---------- 첫 화면 ----------
-  function renderHome(site, works) {
-    document.title = site.nameKo + " " + site.nameEn;
-
-    fill("works", function (box) {
+  // 목록 한 칸: 연도, 제목, 한 줄 설명
+  function renderList(kind, entries) {
+    fill(KINDS[kind].slot, function (box) {
       box.textContent = "";
-      works.forEach(function (w) {
+      entries.forEach(function (w) {
         var li = make("li", "work");
         li.appendChild(make("span", "work-year", w.year));
 
         var title = make("span", "work-title");
-        title.appendChild(maybeLink(w.title, w.id ? "/work/" + w.id : w.href));
+        title.appendChild(maybeLink(w.title, w.id ? "/" + kind + "/" + w.id : w.href));
         li.appendChild(title);
 
         li.appendChild(make("span", "work-summary", w.summary));
         box.appendChild(li);
       });
+
+      // 글이 하나도 없는 노트, 스터디 칸은 숨깁니다
+      var section = box.closest("section");
+      if (section && kind !== "work") section.hidden = entries.length === 0;
     });
+  }
+
+  function renderHome(site, lists) {
+    document.title = site.nameKo + " " + site.nameEn;
+
+    renderList("work", lists.work);
+    renderList("note", lists.note);
+    renderList("study", lists.study);
 
     fill("about", function (box) { box.textContent = site.about; });
 
@@ -107,19 +131,57 @@
     });
   }
 
-  // ---------- 작업 상세 페이지 ----------
-  function renderDetail(site, works) {
-    var id = currentWorkId();
-    var work = works.filter(function (w) { return w.id === id; })[0];
+  // ---------- 상세 페이지 (작업, 노트, 스터디 공용) ----------
+
+  // 스터디의 체크 목록. 같은 단계가 이어지면 단계 이름은 첫 줄에만 적습니다.
+  function renderItems(items, body) {
+    var doneCount = items.filter(function (it) { return it.done; }).length;
+    body.appendChild(make("p", "items-count", "완료 " + doneCount + " / " + items.length));
+
+    var list = make("ul", "items");
+    var lastGroup = null;
+    items.forEach(function (it) {
+      var li = make("li", "item");
+      li.appendChild(make("span", "item-group", it.group !== lastGroup ? it.group : ""));
+      lastGroup = it.group;
+
+      var text = make("div", "item-body");
+      var title = make("span", "item-title");
+      title.appendChild(maybeLink(it.title || "", it.url));
+      if (it.done) title.appendChild(make("span", "item-done", "완료"));
+      text.appendChild(title);
+      if (it.note) text.appendChild(make("span", "item-note", it.note));
+      li.appendChild(text);
+
+      list.appendChild(li);
+    });
+    body.appendChild(list);
+  }
+
+  function renderDetail(site, lists) {
+    var entry = currentEntry();
+    var kind = KINDS[entry.kind];
+    var work = (lists[entry.kind] || []).filter(function (w) { return w.id === entry.id; })[0];
+
+    // 글을 다른 목록으로 옮겼을 때, 예전 주소로 들어와도 새 주소로 보내 줍니다
+    if (!work) {
+      var moved = Object.keys(KINDS).filter(function (k) {
+        return (lists[k] || []).some(function (w) { return w.id === entry.id; });
+      })[0];
+      if (moved) {
+        location.replace("/" + moved + "/" + encodeURIComponent(entry.id));
+        return;
+      }
+    }
 
     fill("detail", function (box) {
       box.textContent = "";
 
       if (!work) {
-        box.appendChild(make("h2", null, "없는 작업"));
+        box.appendChild(make("h2", null, kind.missing));
         var miss = make("div", "work-detail");
-        miss.appendChild(make("p", null, "그런 작업을 찾지 못했습니다."));
-        miss.appendChild(link("작업 목록으로 돌아가기", "/#work", "back-link"));
+        miss.appendChild(make("p", null, kind.missingText));
+        miss.appendChild(link(kind.back, "/" + kind.anchor, "back-link"));
         box.appendChild(miss);
         return;
       }
@@ -130,19 +192,20 @@
 
       var body = make("div", "work-detail");
 
-      // 썸네일 — 사이트 화면 미리보기
-      var figure = make("div", "thumb");
+      // 썸네일 — 화면 미리보기. 작업은 없으면 "준비 중" 칸을, 노트와 스터디는 없으면 비워 둡니다.
       if (work.thumbnail) {
+        var figure = make("div", "thumb");
         var img = document.createElement("img");
         img.src = work.thumbnail;
         img.alt = work.title + " 화면";
         img.loading = "lazy";
         figure.appendChild(img);
-      } else {
-        figure.className = "thumb thumb-empty";
-        figure.appendChild(make("span", null, "준비 중"));
+        body.appendChild(figure);
+      } else if (entry.kind === "work") {
+        var empty = make("div", "thumb thumb-empty");
+        empty.appendChild(make("span", null, "준비 중"));
+        body.appendChild(empty);
       }
-      body.appendChild(figure);
 
       body.appendChild(make("h3", "work-detail-title", work.title));
       if (work.summary) body.appendChild(make("p", "work-summary", work.summary));
@@ -150,6 +213,10 @@
       paragraphs(work.description).forEach(function (t) {
         body.appendChild(make("p", "work-para", t));
       });
+
+      // 체크 목록 (스터디)
+      var items = (work.items || []).filter(function (it) { return it && it.title; });
+      if (items.length) renderItems(items, body);
 
       // 사이트 링크
       var links = (work.links || []).filter(function (l) { return l && l.url; });
@@ -163,7 +230,7 @@
         body.appendChild(list);
       }
 
-      body.appendChild(link("작업 목록으로 돌아가기", "/#work", "back-link"));
+      body.appendChild(link(kind.back, "/" + kind.anchor, "back-link"));
       box.appendChild(body);
     });
   }
@@ -175,12 +242,28 @@
     });
   }
 
-  Promise.all([load("/data/site.json"), load("/data/works.json")])
+  // 노트와 스터디는 파일에 문제가 있어도 작업 목록까지 멈추지 않게, 빈 목록으로 둡니다
+  function loadList(path, key) {
+    return load(path)
+      .then(function (data) { return data[key] || []; })
+      .catch(function (err) {
+        if (window.console) console.error(err);
+        return [];
+      });
+  }
+
+  Promise.all([
+    load("/data/site.json"),
+    load("/data/works.json"),
+    loadList("/data/notes.json", "notes"),
+    loadList("/data/studies.json", "studies")
+  ])
     .then(function (r) {
-      var site = r[0], works = r[1].works || [];
+      var site = r[0];
+      var lists = { work: r[1].works || [], note: r[2], study: r[3] };
       renderShell(site);
-      if (slot("detail")) renderDetail(site, works);
-      else renderHome(site, works);
+      if (slot("detail")) renderDetail(site, lists);
+      else renderHome(site, lists);
     })
     .catch(function (err) {
       // 흔한 원인: index.html 을 그냥 더블클릭해서 열었을 때입니다.

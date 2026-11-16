@@ -1,5 +1,7 @@
 {
   "rewrites": [
-    { "source": "/work/:id", "destination": "/work.html" }
+    { "source": "/work/:id", "destination": "/work.html" },
+    { "source": "/note/:id", "destination": "/work.html" },
+    { "source": "/study/:id", "destination": "/work.html" }
   ]
 }

@@ -20,9 +20,11 @@
 <body>
 <!--
   이 파일은 "틀"입니다. 글자 내용은 data 폴더에 들어 있습니다.
-    data/works.json  작업 목록
-    data/site.json   이름, 소개, 메뉴, 연락처
-  작업을 추가하거나 고칠 때는 그 두 파일만 열면 됩니다.
+    data/works.json    작업 목록
+    data/notes.json    노트
+    data/studies.json  스터디
+    data/site.json     이름, 소개, 메뉴, 연락처
+  글을 추가하거나 고칠 때는 그 파일들만 열면 됩니다.
   이 파일은 섹션을 늘리거나 없앨 때만 건드리세요.
 -->
 
@@ -37,6 +39,16 @@
   <section class="block" id="work" aria-labelledby="work-heading">
     <h2 id="work-heading">Work</h2>
     <ul class="work-list" data-slot="works"></ul>
+  </section>
+
+  <section class="block" id="note" aria-labelledby="note-heading">
+    <h2 id="note-heading">Note</h2>
+    <ul class="work-list" data-slot="notes"></ul>
+  </section>
+
+  <section class="block" id="study" aria-labelledby="study-heading">
+    <h2 id="study-heading">Study</h2>
+    <ul class="work-list" data-slot="studies"></ul>
   </section>
 
   <section class="block" id="about" aria-labelledby="about-heading">

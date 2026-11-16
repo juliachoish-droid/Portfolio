@@ -63,6 +63,121 @@ content:
                 label: 주소
                 type: string
 
+  # ---------- 노트 ----------
+  - name: notes
+    label: 노트
+    type: file
+    path: data/notes.json
+    fields:
+      - name: notes
+        label: 노트
+        type: object
+        list: true
+        fields:
+          - name: id
+            label: 주소 이름
+            type: string
+            description: 영문 소문자로. 상세 페이지 주소가 됩니다 (예 site-log → /note/site-log)
+          - name: year
+            label: 연도
+            type: string
+            description: 예) 2026  또는  2025–2026
+          - name: title
+            label: 제목
+            type: string
+          - name: summary
+            label: 한 줄 설명
+            type: string
+            description: 첫 화면 목록에 보이는 줄
+          - name: thumbnail
+            label: 이미지
+            type: image
+            description: 상세 페이지 맨 위에 보입니다. 비워 두면 글만 나옵니다
+          - name: description
+            label: 본문
+            type: text
+            description: 빈 줄로 나누면 문단이 나뉩니다
+          - name: links
+            label: 링크
+            type: object
+            list: true
+            fields:
+              - name: label
+                label: 보이는 글자
+                type: string
+              - name: url
+                label: 주소
+                type: string
+
+  # ---------- 스터디 ----------
+  - name: studies
+    label: 스터디
+    type: file
+    path: data/studies.json
+    fields:
+      - name: studies
+        label: 스터디
+        type: object
+        list: true
+        fields:
+          - name: id
+            label: 주소 이름
+            type: string
+            description: 영문 소문자로. 상세 페이지 주소가 됩니다 (예 aistudy → /study/aistudy)
+          - name: year
+            label: 연도
+            type: string
+            description: 예) 2026  또는  2025–2026
+          - name: title
+            label: 제목
+            type: string
+          - name: summary
+            label: 한 줄 설명
+            type: string
+            description: 첫 화면 목록에 보이는 줄
+          - name: thumbnail
+            label: 이미지
+            type: image
+            description: 상세 페이지 맨 위에 보입니다. 비워 두면 글만 나옵니다
+          - name: description
+            label: 본문
+            type: text
+            description: 빈 줄로 나누면 문단이 나뉩니다
+          - name: items
+            label: 체크 목록
+            description: 하나씩 해 나가는 스터디에 씁니다. 비워 두면 본문만 나옵니다
+            type: object
+            list: true
+            fields:
+              - name: group
+                label: 단계
+                type: string
+                description: 예) 그리기. 같은 단계가 이어지면 화면에는 첫 줄에만 보입니다
+              - name: title
+                label: 이름
+                type: string
+              - name: url
+                label: 주소
+                type: string
+              - name: note
+                label: 해볼 것
+                type: string
+              - name: done
+                label: 완료
+                type: boolean
+                default: false
+          - name: links
+            label: 링크
+            type: object
+            list: true
+            fields:
+              - name: label
+                label: 보이는 글자
+                type: string
+              - name: url
+                label: 주소
+                type: string
+
   # ---------- 사이트 기본 정보 ----------
   - name: site
     label: 사이트 정보
